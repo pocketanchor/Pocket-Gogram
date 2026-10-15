@@ -1,0 +1,109 @@
+@import "tailwindcss" source("../");
+
+:root {
+  /* Brand Tokens */
+  --color-kelp: #3D402F;
+  --color-willow-grove: #6B7F64;
+  --color-whiskey: #D59A7A;
+  --color-tamarillo: #9C0D0F;
+  --color-crimson-violet: #5B1E32;
+  --color-dusty-lavender: #665F76;
+
+  /* Semantic UI Tokens */
+  --bg-navigation: var(--color-kelp);
+  --brand-accent-warm: var(--color-whiskey);
+  --brand-cta-urgent: var(--color-tamarillo);
+  --map-polyline-active: var(--color-willow-grove);
+
+  /* Supporting neutrals (derived from Kelp) */
+  --paper: #F3EFE6;
+  --paper-deep: #E8E2D4;
+  --ink: #23251B;
+
+  /* Gradients */
+  --gradient-cinematic: linear-gradient(135deg, var(--color-crimson-violet) 0%, var(--color-kelp) 100%);
+  --gradient-journal-hero: linear-gradient(180deg, rgba(91, 30, 50, 0.8) 0%, rgba(61, 64, 47, 0.95) 100%);
+}
+
+@theme {
+  --color-kelp: #3D402F;
+  --color-willow: #6B7F64;
+  --color-whiskey: #D59A7A;
+  --color-tamarillo: #9C0D0F;
+  --color-crimson: #5B1E32;
+  --color-lavender: #665F76;
+  --color-paper: #F3EFE6;
+  --color-paper-deep: #E8E2D4;
+  --color-ink: #23251B;
+
+  --font-display: 'Bricolage Grotesque', system-ui, sans-serif;
+  --font-serif: 'Newsreader', Georgia, serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-display);
+  background: var(--paper);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+}
+
+.bg-cinematic { background: var(--gradient-cinematic); }
+.bg-journal-hero { background: var(--gradient-journal-hero); }
+
+/* Topographic contour texture used behind map previews */
+.topo {
+  background-color: #E4DFD0;
+  background-image:
+    radial-gradient(circle at 20% 30%, transparent 0 38px, rgba(61, 64, 47, 0.07) 39px 40px, transparent 41px 70px, rgba(61, 64, 47, 0.07) 71px 72px, transparent 73px),
+    radial-gradient(circle at 78% 70%, transparent 0 28px, rgba(61, 64, 47, 0.07) 29px 30px, transparent 31px 58px, rgba(61, 64, 47, 0.07) 59px 60px, transparent 61px 92px, rgba(61, 64, 47, 0.06) 93px 94px, transparent 95px),
+    linear-gradient(rgba(61, 64, 47, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(61, 64, 47, 0.04) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 100%, 24px 24px, 24px 24px;
+}
+
+.topo-dark {
+  background-color: #2C2E22;
+  background-image:
+    radial-gradient(circle at 30% 40%, transparent 0 60px, rgba(213, 154, 122, 0.08) 61px 62px, transparent 63px 110px, rgba(213, 154, 122, 0.06) 111px 112px, transparent 113px 170px, rgba(213, 154, 122, 0.05) 171px 172px, transparent 173px),
+    radial-gradient(circle at 75% 65%, transparent 0 40px, rgba(107, 127, 100, 0.12) 41px 42px, transparent 43px 90px, rgba(107, 127, 100, 0.1) 91px 92px, transparent 93px),
+    linear-gradient(rgba(243, 239, 230, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(243, 239, 230, 0.03) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 100%, 32px 32px, 32px 32px;
+}
+
+.grain::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 60;
+  opacity: 0.06;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+@keyframes draw-path {
+  from { stroke-dashoffset: var(--len, 1200); }
+  to { stroke-dashoffset: 0; }
+}
+.draw-path {
+  stroke-dasharray: var(--len, 1200);
+  animation: draw-path 2.4s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+}
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.rise { opacity: 0; animation: rise 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) forwards; }
+
+@keyframes ping-soft {
+  0% { transform: scale(1); opacity: 0.6; }
+  100% { transform: scale(2.6); opacity: 0; }
+}
+.ping-soft { animation: ping-soft 1.8s ease-out infinite; transform-box: fill-box; transform-origin: center; }
+
+@media (prefers-reduced-motion: reduce) {
+  .draw-path, .rise, .ping-soft { animation: none; opacity: 1; stroke-dasharray: none; }
+}
